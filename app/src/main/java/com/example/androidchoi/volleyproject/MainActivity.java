@@ -8,7 +8,6 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
@@ -19,8 +18,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        String ccbaKdcd = "11";
+        String ccbaCtcd = "11";
+        String ccbaAsno = "02240000";
+        String url = String.format("http://www.cha.go.kr/cha/SearchKindOpenapiDt.do?ccbaKdcd=%s&ccbaCtcd=%s&ccbaAsno=%s", ccbaKdcd, ccbaCtcd, ccbaAsno);
+
         RequestQueue request = Volley.newRequestQueue(MainActivity.this);
-        request.add(new StringRequest(Request.Method.GET, "http://www.cha.go.kr/cha/SearchKindOpenapiDt.do?ccbaKdcd=11&ccbaCtcd=11&ccbaAsno=02240000",
+        request.add(new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
 
                     @Override
@@ -33,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 // TODO Auto-generated method stub
-                VolleyLog.d("Error", error.getMessage());
+                Log.i("Error", error.getMessage());
             }
         }));
     }
