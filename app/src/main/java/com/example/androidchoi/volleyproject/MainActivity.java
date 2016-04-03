@@ -7,12 +7,16 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
-    TextView mTextPlaceName;
+    private TextView mTextPlaceName;
+    private TextView mTextPlaceContent;
+    private PlaceData mPlaceData;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mTextPlaceName = (TextView)findViewById(R.id.text_place_name);
+        mTextPlaceContent = (TextView)findViewById(R.id.text_place_content);
 
         String ccbaKdcd = "11";
         String ccbaCtcd = "11";
@@ -22,7 +26,9 @@ public class MainActivity extends AppCompatActivity {
                 new NetworkManager.OnResultListener<PlaceLab>() {
                     @Override
                     public void onSuccess(PlaceLab result) {
-                        mTextPlaceName.setText(result.getPlaceData().getName());
+                        mPlaceData = result.getPlaceData();
+                        mTextPlaceName.setText(mPlaceData.getName());
+                        mTextPlaceContent.setText(mPlaceData.getContent());
                     }
 
                     @Override
