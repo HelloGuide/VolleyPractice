@@ -36,11 +36,12 @@ public class NetworkManager {
 
     public interface OnResultListener<T> {
         public void onSuccess(T result);
-        public void onFail(int code);
+        public void onFail(String error);
     }
 
     // 건물 상세 정보 요청 method
-    public void getPlaceInfo(Context context, String ccbaKdcd, String ccbaCtcd, String ccbaAsno) {
+    public void getPlaceInfo(Context context, String ccbaKdcd, String ccbaCtcd, String ccbaAsno,
+                             final OnResultListener<PlaceLab> listener) {
         String url = String.format("http://www.cha.go.kr/cha/SearchKindOpenapiDt.do?ccbaKdcd=%s&ccbaCtcd=%s&ccbaAsno=%s", ccbaKdcd, ccbaCtcd, ccbaAsno);
         RequestQueue request = Volley.newRequestQueue(context);
         request.add(new StringRequest(Request.Method.GET, url,
@@ -50,6 +51,7 @@ public class NetworkManager {
                         // TODO Auto-generated method stub
                         ByteArrayInputStream bais = new ByteArrayInputStream(response.getBytes(Charset.forName("UTF-8")));
                         PlaceLab placeLab = parser.fromXml(bais, "result", PlaceLab.class);
+                        listener.onSuccess(placeLab);
                     }
                 },
                 new Response.ErrorListener() {
@@ -57,6 +59,7 @@ public class NetworkManager {
                     public void onErrorResponse(VolleyError error) {
                         // TODO Auto-generated method stub
                         Log.i("Error", error.getMessage());
+                        listener.onFail(error.getMessage());
                     }
                 }));
     }
